@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
 class IndexView extends GetView {
@@ -7,6 +6,7 @@ class IndexView extends GetView {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // 👈 tambahkan ini
       appBar: AppBar(
         title: const Text('IndexView'),
         centerTitle: true,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -13,40 +12,27 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     HomeController controller = Get.put(HomeController());
     return Scaffold(
-      // Membuat struktur utama tampilan aplikasi dengan widget Scaffold
-      backgroundColor: HexColor(
-          '#FFFFFF '), // Menentukan warna latar belakang Scaffold dengan kode warna heksadesimal
+      backgroundColor: Colors.white, // warna background putih bersih
       body: Center(
-        // Membuat widget Center sebagai kontainer untuk widget Column
         child: Column(
-          // Membuat widget Column sebagai tampilan vertikal
-          mainAxisAlignment: MainAxisAlignment
-              .center, // Menentukan posisi tampilan vertikal pada tengah halaman
-          crossAxisAlignment: CrossAxisAlignment
-              .center, // Menentukan posisi tampilan horizontal pada tengah halaman
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Widget turunan dari widget Column
-            Lottie.asset(
-              // Widget Lottie untuk menampilkan animasi Lottie dengan sumber dari folder assets
-              'assets/lottie/animation.json',
-              fit: BoxFit
-                  .cover, // Menentukan ukuran dan posisi animasi Lottie pada tampilan
+            SizedBox(
+              width: 150, // ukuran sedang
+              height: 150,
+              child: Lottie.asset(
+                'assets/lottie/animation.json',
+                fit: BoxFit.contain,
+              ),
             ),
-            const SizedBox(
-              // Widget SizedBox untuk memberikan jarak antar widget
-              height:
-                  15, // Menentukan jarak vertikal antara widget Lottie dan Text
-            ),
+            const SizedBox(height: 15),
             Text(
-              // Widget Text untuk menampilkan teks pada tampilan aplikasi
-              'JOBSHIP', // Isi teks pada widget Text
+              'JOBSHIP',
               style: GoogleFonts.roboto(
-                // Menggunakan font Google Roboto pada widget Text
                 textStyle: const TextStyle(
-                  // Styling pada widget Text
-                  fontWeight:
-                      FontWeight.bold, // Menentukan ketebalan font pada teks
-                  fontSize: 30, // Menentukan ukuran font pada teks
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
                 ),
               ),
             ),

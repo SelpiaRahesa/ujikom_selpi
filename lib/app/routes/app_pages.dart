@@ -6,6 +6,10 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/motivation/bindings/motivation_binding.dart';
+import '../modules/motivation/views/motivation_view.dart';
+import '../modules/perusahaan/bindings/perusahaan_binding.dart';
+import '../modules/perusahaan/views/perusahaan_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/register/bindings/register_binding.dart';
@@ -41,8 +45,18 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PROFILE,
-      page: () => const ProfileView(),
+      page: () => ProfileView(),
       binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.MOTIVATION,
+      page: () => MotivationView(),
+      binding: MotivationBinding(),
+    ),
+    GetPage(
+      name: _Paths.PERUSAHAAN,
+      page: () =>  PerusahaanView(),
+      binding: PerusahaanBinding(),
     ),
   ];
 }

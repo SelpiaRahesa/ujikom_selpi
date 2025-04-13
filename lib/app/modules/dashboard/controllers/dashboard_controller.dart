@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ujikom_selpi/app/modules/dashboard/views/index_view.dart';
-import 'package:ujikom_selpi/app/modules/dashboard/views/profile_view.dart';
+import 'package:ujikom_selpi/app/modules/motivation/views/motivation_view.dart';
+import 'package:ujikom_selpi/app/modules/perusahaan/views/perusahaan_view.dart';
+import 'package:ujikom_selpi/app/modules/profile/views/profile_view.dart';
 
 class DashboardController extends GetxController {
   var selectedIndex = 0.obs;
@@ -11,8 +13,11 @@ class DashboardController extends GetxController {
   }
 
   final List<Widget> pages = [
-    IndexView(),
+    IndexView(), 
+    PerusahaanView(),
+    MotivationView(),
     ProfileView(),
+   
   ];
 
   @override

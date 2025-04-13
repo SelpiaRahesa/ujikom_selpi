@@ -6,7 +6,6 @@ class ProfileResponse {
   String? role;
   String? createdAt;
   String? updatedAt;
-  String? avatar;
 
   ProfileResponse(
       {this.id,
@@ -15,8 +14,7 @@ class ProfileResponse {
       this.emailVerifiedAt,
       this.role,
       this.createdAt,
-      this.updatedAt,
-      this.avatar});
+      this.updatedAt});
 
   ProfileResponse.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -26,7 +24,6 @@ class ProfileResponse {
     role = json['role'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    avatar = json['avatar'];
   }
 
   Map<String, dynamic> toJson() {
@@ -38,7 +35,6 @@ class ProfileResponse {
     data['role'] = this.role;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    data['avatar'] = avatar;
     return data;
   }
 }

@@ -29,10 +29,21 @@ class DashboardView extends GetView<DashboardController> {
                   ),
                 );
           },
+          type: BottomNavigationBarType.fixed, // tambahkan ini
+          selectedItemColor: Colors.blue, // warna icon/text saat aktif
+          unselectedItemColor: Colors.grey, // warna icon/text saat tidak aktif
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Index',
+            ),
+           
+            BottomNavigationBarItem(
+              icon: Icon(Icons.apartment),
+              label: 'Perusahaan',
+            ), BottomNavigationBarItem(
+              icon: Icon(Icons.article),
+              label: 'Motivasi',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
@@ -42,5 +53,5 @@ class DashboardView extends GetView<DashboardController> {
         ),
       ),
     );
-}
+  }
 }
