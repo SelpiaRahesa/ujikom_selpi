@@ -10,7 +10,7 @@ void main() async {
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Career Tips",
+      title: "JobShip",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       scrollBehavior: MaterialScrollBehavior().copyWith(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ujikom_selpi/app/data/motivation_response.dart';
 import 'package:ujikom_selpi/app/modules/dashboard/views/motivation_detail_view.dart';
@@ -52,14 +53,15 @@ class MotivationView extends StatelessWidget {
               controller: scrollController,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                final item = snapshot.data!.motivation![index];
+                final Motivation = snapshot.data!.motivation![index];
                 return ZoomTapAnimation(
                   onTap: () {
-                    Get.to(() => MotivationDetailView(motivation: item));
+                    Get.to(() => MotivationDetailView(motivation: Motivation));
                   },
                   child: Card(
                     elevation: 8, // 👈 lebih tinggi buat 3D feel
-                    shadowColor: Colors.black.withOpacity(0.2), // 👈 lebih tajam
+                    shadowColor:
+                        Colors.black.withOpacity(0.2), // 👈 lebih tajam
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -71,7 +73,7 @@ class MotivationView extends StatelessWidget {
                           borderRadius: const BorderRadius.vertical(
                               top: Radius.circular(16)),
                           child: Image.network(
-                            'http://192.168.246.217:8000/storage/motivasis/1Jv9VevAFX3BddoyRHn52hMjbwzz4zcXf4zZtxmc.jpg',
+                            'http://127.0.0.1:8000/storage/motivasis/${Motivation.image}',
                             fit: BoxFit.cover,
                             height: 180,
                             width: double.infinity,
@@ -86,7 +88,7 @@ class MotivationView extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Text(
-                            item.judul ?? 'Judul tidak tersedia',
+                            Motivation.judul ?? 'Judul tidak tersedia',
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,

@@ -1,29 +1,22 @@
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:ujikom_selpi/app/data/motivation_response.dart';
-import 'package:ujikom_selpi/app/utils/api.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MotivationController extends GetxController {
-   final _getConnect = GetConnect();
-  final token = GetStorage().read('token');
-
   Future<MotivationResponse> getMotivation() async {
-    try {
-      final response = await _getConnect.get(
-        BaseUrl.motivation,
-        headers: {'Authorization': 'Bearer $token'},
-        contentType: 'application/json',
-      );
+    final response = await http.get(
+      Uri.parse('http://10.10.8.163:8000/api/motivation/'),
+      headers: {
+        'Accept': 'application/json',
+      },
+    );
 
-      return MotivationResponse.fromJson(response.body);
-    } catch (e) {
-      throw Exception('Gagal memuat motivasi: $e');
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return MotivationResponse.fromJson(data);
+    } else {
+      throw Exception('Gagal memuat data motivasi');
     }
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    getMotivation();
   }
 }

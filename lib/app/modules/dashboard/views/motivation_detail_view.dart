@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:ujikom_selpi/app/data/motivation_response.dart';
 
 class MotivationDetailView extends StatelessWidget {
@@ -25,7 +24,7 @@ class MotivationDetailView extends StatelessWidget {
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.network(
-                      motivation.image!,
+                            'http://127.0.0.1:8000/storage/motivasis/${motivation.image}',
                       height: 250,
                       width: double.infinity,
                       fit: BoxFit.cover,

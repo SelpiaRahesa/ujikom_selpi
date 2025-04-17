@@ -4,31 +4,21 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class PerusahaanController extends GetxController {
-  var isLoading = true.obs;
-  var perusahaanList = <Perusahaan>[].obs;
+  // Mengubah perusahaanList menjadi future yang akan mengembalikan Future<List<Perusahaan>>.
+ Future<PerusahaanResponse> fetchPerusahaan() async {
+  try {
+    final response = await http.get(Uri.parse('http://10.10.8.163:8000/api/perusahaan/'));
+    print('Response: ${response.body}');  // Menampilkan response untuk debug
 
-  @override
-  void onInit() {
-    fetchPerusahaan();
-    super.onInit();
-  }
-
-  void fetchPerusahaan() async {
-    try {
-      isLoading(true);
-      final response = await http.get(Uri.parse('http://192.168.100.140:8000/api/perusahaan/'));
-
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-        final perusahaanResponse = PerusahaanResponse.fromJson(jsonData);
-        perusahaanList.value = perusahaanResponse.data ?? [];
-      } else {
-        Get.snackbar('Error', 'Gagal mengambil data perusahaan');
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Terjadi kesalahan: $e');
-    } finally {
-      isLoading(false);
+    if (response.statusCode == 200) {
+      return PerusahaanResponse.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load perusahaan');
     }
+  } catch (e) {
+    print('Error: $e');  // Menangani error
+    rethrow;
   }
+}
+
 }

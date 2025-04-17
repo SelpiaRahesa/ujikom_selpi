@@ -1,99 +1,113 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:ujikom_selpi/app/modules/perusahaan/controllers/perusahaan_controller.dart';
+import 'package:ujikom_selpi/app/data/perusahaan_response.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+import '../controllers/perusahaan_controller.dart';
 
-class PerusahaanView extends StatelessWidget {
-  final PerusahaanController controller = Get.put(PerusahaanController());
+class PerusahaanView extends GetView {
+  const PerusahaanView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final PerusahaanController controller = Get.put(PerusahaanController());
+    final ScrollController scrollController = ScrollController();
+
     return Scaffold(
-      backgroundColor: Colors.white, // Background putih
       appBar: AppBar(
         title: const Text('Daftar Perusahaan'),
         centerTitle: true,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        elevation: 0,
+        elevation: 1,
       ),
-      body: Obx(() {
-        if (controller.isLoading.value) {
-          // Menampilkan animasi handshake Lottie saat loading
-          return Center(
-            child: Lottie.asset(
-              'assets/handshake.json', // Pastikan path benar
-              width: 200,
-              height: 200,
-            ),
-          );
-        }
-
-        if (controller.perusahaanList.isEmpty) {
-          return const Center(child: Text('Tidak ada perusahaan.'));
-        }
-
-        String baseUrl = 'http://192.168.100.140:8000/storage/perusahaans/';
-        return ScrollConfiguration(
-          behavior: const ScrollBehavior().copyWith(
-            dragDevices: {PointerDeviceKind.touch, PointerDeviceKind.mouse},
-          ),
-          child: ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: controller.perusahaanList.length,
-            itemBuilder: (context, index) {
-              final perusahaan = controller.perusahaanList[index];
-
-            String imageUrl = (perusahaan.image ?? '').contains('http')
-    ? perusahaan.image!
-    : 'http://192.168.100.140:8000/storage/${perusahaan.image}';
-// Gambar placeholder jika tidak ada image
-
-              return Card(
-                elevation: 8, // 3D effect
-                shadowColor: Colors.black.withOpacity(0.15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                margin: const EdgeInsets.only(bottom: 16),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    children: [
-                      // Avatar image bulat
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: Image.network(
-                          imageUrl,  // Menggunakan URL lengkap yang telah dibuat
-                          width: 60,
-                          height: 60,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              const Icon(Icons.image_not_supported, size: 60),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      // Nama perusahaan
-                      Expanded(
-                        child: Text(
-                          perusahaan.namaPerusahaan ?? '-',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: FutureBuilder<PerusahaanResponse>(
+          future: controller.fetchPerusahaan(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: Lottie.asset(
+                  'assets/lottie/handshake.json',
+                  repeat: true,
+                  width: MediaQuery.of(context).size.width / 1.5,
                 ),
               );
-            },
-            physics: BouncingScrollPhysics(), // Efek scrolling lebih smooth
-          ),
-        );
-      }),
+            }
+
+            if (snapshot.hasError) {
+              return Center(
+                child: Text('Terjadi kesalahan: ${snapshot.error}'),
+              );
+            }
+
+            if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+              return const Center(child: Text('Tidak ada perusahaan.'));
+            }
+
+            List<Perusahaan> perusahaanList = snapshot.data!.data!;
+
+            return ListView.builder(
+              itemCount: perusahaanList.length,
+              controller: scrollController,
+              itemBuilder: (context, index) {
+                final perusahaan = perusahaanList[index];
+                return ZoomTapAnimation(
+                  onTap: () {
+                    // TODO: Arahkan ke detail perusahaan jika ada
+                  },
+                  child: Card(
+                    elevation: 10,
+                    shadowColor: Colors.black12,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // Logo
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.network(
+                              'http://127.0.0.1:8000/storage/perusahaans/${perusahaan.image}',
+                              width: 70,
+                              height: 70,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  width: 70,
+                                  height: 70,
+                                  color: Colors.grey.shade300,
+                                  child: const Icon(Icons.image_not_supported),
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          // Info
+                          Expanded(
+                            child: Text(
+                              perusahaan.namaPerusahaan ?? 'Nama Perusahaan',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
+      ),
     );
   }
 }

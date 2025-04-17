@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ujikom_selpi/app/modules/profile/controllers/profile_controller.dart';
@@ -5,58 +6,89 @@ import 'package:ujikom_selpi/app/modules/profile/controllers/profile_controller.
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
 
+  Color getRandomColor() {
+    final random = Random();
+    return Color.fromARGB(
+      255,
+      random.nextInt(256),
+      random.nextInt(256),
+      random.nextInt(256),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Inisialisasi ProfileController
-    Get.put(ProfileController()); // Pastikan controller sudah diinisialisasi
+    final controller = Get.put(ProfileController());
+    final Color avatarColor = getRandomColor();
 
     return Scaffold(
-      backgroundColor: Colors.white, // 👈 Tambahkan ini
-      appBar: AppBar(title: const Text('Profil')),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Profil Saya',
+          style: TextStyle(color: Colors.black87),
+        ),
+        centerTitle: true,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black87),
+        actions: [
+          IconButton(
+            onPressed: () => controller.logout(),
+            icon: const Icon(Icons.logout, color: Colors.redAccent),
+            tooltip: 'Logout',
+          ),
+        ],
+      ),
       body: Obx(() {
-        // Loading state
-        if (Get.find<ProfileController>().isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+        if (controller.isLoading.value) {
+          return const Center(
+            child: CircularProgressIndicator(color: Colors.orangeAccent),
+          );
         }
 
-        final user = Get.find<ProfileController>().user.value;
+        final user = controller.profileData.value;
 
-        if (user == null) {
-          return const Center(child: Text("Data profil tidak tersedia."));
+        if ((user.name?.isEmpty ?? true) || (user.email?.isEmpty ?? true)) {
+          return const Center(
+            child: Text(
+              'Data profil tidak tersedia.',
+              style: TextStyle(color: Colors.black54),
+            ),
+          );
         }
 
         return Center(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(24),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 CircleAvatar(
-                  radius: 40,
-                  backgroundColor: Colors.blue,
+                  radius: 60,
+                  backgroundColor: avatarColor,
                   child: Text(
-                    user.name?.isNotEmpty ?? false
-                        ? user.name![0].toUpperCase()
-                        : '',
-                    style: const TextStyle(fontSize: 32, color: Colors.white),
+                    user.name!.isNotEmpty ? user.name![0].toUpperCase() : '?',
+                    style: const TextStyle(
+                      fontSize: 40,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  user.name ?? 'Nama tidak tersedia',
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  user.name ?? 'User',
+                  style: const TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 Text(
-                  user.email ?? 'Email tidak tersedia',
-                  style: const TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    Get.find<ProfileController>().logout();
-                  },
-                  child: const Text('Logout'),
+                  user.email ?? '-',
+                  style: const TextStyle(fontSize: 16, color: Colors.black54),
                 ),
               ],
             ),
