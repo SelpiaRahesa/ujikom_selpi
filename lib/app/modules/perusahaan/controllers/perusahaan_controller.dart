@@ -7,7 +7,7 @@ class PerusahaanController extends GetxController {
   // Mengubah perusahaanList menjadi future yang akan mengembalikan Future<List<Perusahaan>>.
  Future<PerusahaanResponse> fetchPerusahaan() async {
   try {
-    final response = await http.get(Uri.parse('http://10.10.8.163:8000/api/perusahaan/'));
+    final response = await http.get(Uri.parse('http://192.168.100.140:8000/api/perusahaan/'));
     print('Response: ${response.body}');  // Menampilkan response untuk debug
 
     if (response.statusCode == 200) {

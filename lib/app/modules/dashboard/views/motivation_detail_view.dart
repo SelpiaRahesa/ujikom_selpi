@@ -24,7 +24,7 @@ class MotivationDetailView extends StatelessWidget {
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.network(
-                            'http://127.0.0.1:8000/storage/motivasis/${motivation.image}',
+                            'http://192.168.100.140:8000/storage/motivasis/${motivation.image}',
                       height: 250,
                       width: double.infinity,
                       fit: BoxFit.cover,

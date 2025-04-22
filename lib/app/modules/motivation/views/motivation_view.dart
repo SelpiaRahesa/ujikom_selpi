@@ -73,7 +73,7 @@ class MotivationView extends StatelessWidget {
                           borderRadius: const BorderRadius.vertical(
                               top: Radius.circular(16)),
                           child: Image.network(
-                            'http://127.0.0.1:8000/storage/motivasis/${Motivation.image}',
+                            'http://192.168.100.140:8000/storage/motivasis/${Motivation.image}',
                             fit: BoxFit.cover,
                             height: 180,
                             width: double.infinity,

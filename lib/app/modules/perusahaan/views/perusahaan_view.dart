@@ -73,7 +73,7 @@ class PerusahaanView extends GetView {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(12),
                             child: Image.network(
-                              'http://127.0.0.1:8000/storage/perusahaans/${perusahaan.image}',
+                              'http://192.168.100.140:8000/storage/perusahaans/${perusahaan.image}',
                               width: 70,
                               height: 70,
                               fit: BoxFit.cover,

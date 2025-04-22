@@ -6,7 +6,7 @@ import 'dart:convert';
 class MotivationController extends GetxController {
   Future<MotivationResponse> getMotivation() async {
     final response = await http.get(
-      Uri.parse('http://10.10.8.163:8000/api/motivation/'),
+      Uri.parse('http://192.168.100.140:8000/api/motivation/'),
       headers: {
         'Accept': 'application/json',
       },
